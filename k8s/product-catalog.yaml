@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalog
+  labels:
+    app: product-catalog
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-catalog
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5001"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+      - name: product-catalog
+        image: peakyecommerce/product-catalog:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5001
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-catalog-service
+  labels:
+    app: product-catalog
+spec:
+  ports:
+  - port: 5001
+    targetPort: 5001
+    protocol: TCP
+  selector:
+    app: product-catalog
+  type: ClusterIP

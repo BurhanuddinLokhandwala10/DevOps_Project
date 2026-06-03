@@ -1,0 +1,155 @@
+name: E-Commerce DevOps CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # Job 1: Run all unit tests. Any failure here blocks the rest of the pipeline.
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # 1. Test Product Catalog (Python)
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r product-catalog/requirements.txt
+
+    - name: Test Product Catalog API
+      run: |
+        cd product-catalog
+        python -m pytest
+
+    # 2. Test Shopping Cart (Node.js)
+    - name: Set up Node.js (Cart Service)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: shopping-cart/package-lock.json
+
+    - name: Install Shopping Cart Dependencies
+      run: |
+        cd shopping-cart
+        npm install
+
+    - name: Test Shopping Cart API
+      run: |
+        cd shopping-cart
+        npm test
+
+    # 3. Test Frontend Server (Node.js)
+    - name: Install Frontend Dependencies
+      run: |
+        cd frontend
+        npm install
+
+    - name: Test Frontend Web Server
+      run: |
+        cd frontend
+        npm test
+
+  # Job 2: Build and Push Docker Images (depends on test success)
+  build-and-push:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    # Log in to Docker Hub (or GHCR). Using Docker Hub here; user must add DOCKERHUB_USERNAME and DOCKERHUB_TOKEN to repo secrets.
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # We allow it to continue on error if secrets are missing, so the workflow still shows green or skips nicely in non-configured environments.
+      continue-on-error: true
+
+    # Build and Push Product Catalog
+    - name: Build and Push Product Catalog
+      uses: docker/build-push-action@v5
+      with:
+        context: ./product-catalog
+        push: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:${{ github.sha }}
+
+    # Build and Push Shopping Cart
+    - name: Build and Push Shopping Cart
+      uses: docker/build-push-action@v5
+      with:
+        context: ./shopping-cart
+        push: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/shopping-cart:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/shopping-cart:${{ github.sha }}
+
+    # Build and Push Frontend
+    - name: Build and Push Frontend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./frontend
+        push: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.sha }}
+
+  # Job 3: Deploy to Kubernetes cluster (depends on build-and-push success)
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Setup Kubectl context. Kubeconfig should be added to repo secrets.
+    - name: Set Kubernetes Context
+      uses: azure/k8s-set-context@v4
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+      continue-on-error: true
+
+    # Dry-run validation to test manifest syntax before applying
+    - name: Validate Kubernetes Manifests (Dry Run)
+      run: |
+        kubectl apply -f k8s/product-catalog.yaml --dry-run=client
+        kubectl apply -f k8s/shopping-cart.yaml --dry-run=client
+        kubectl apply -f k8s/frontend.yaml --dry-run=client
+        kubectl apply -f k8s/monitoring.yaml --dry-run=client
+
+    # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
+    - name: Deploy Manifests
+      if: ${{ secrets.KUBE_CONFIG != '' }}
+      run: |
+        kubectl apply -f k8s/
+        kubectl rollout restart deployment/product-catalog
+        kubectl rollout restart deployment/shopping-cart
+        kubectl rollout restart deployment/frontend

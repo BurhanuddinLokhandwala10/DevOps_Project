@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  product-catalog:
+    build: ./product-catalog
+    container_name: product-catalog
+    ports:
+      - "5001:5001"
+    networks:
+      - ecommerce-network
+    restart: always
+
+  shopping-cart:
+    build: ./shopping-cart
+    container_name: shopping-cart
+    ports:
+      - "5002:5002"
+    networks:
+      - ecommerce-network
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "5000:5000"
+    environment:
+      - PRODUCT_CATALOG_URL=http://product-catalog:5001
+      - SHOPPING_CART_URL=http://shopping-cart:5002
+    depends_on:
+      - product-catalog
+      - shopping-cart
+    networks:
+      - ecommerce-network
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - ecommerce-network
+    restart: always
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    ports:
+      - "3003:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - ecommerce-network
+    restart: always
+
+networks:
+  ecommerce-network:
+    driver: bridge

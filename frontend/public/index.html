@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peaky Shop | Minimalist E-Commerce</title>
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <i data-lucide="shopping-bag" class="logo-icon"></i>
+        <span>PEAKY<span class="logo-accent">SHOP</span></span>
+      </div>
+      <div class="nav-search">
+        <input type="text" placeholder="Search curated products..." id="search-input" />
+        <i data-lucide="search" class="search-icon"></i>
+      </div>
+      <div class="nav-actions">
+        <button id="cart-toggle-btn" class="nav-btn cart-btn">
+          <i data-lucide="shopping-cart"></i>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-tag">New Collection 2026</span>
+      <h1>Elevate Your Workspace & Lifestyle</h1>
+      <p>Explore our carefully curated collection of premium accessories designed for minimalist aesthetic and everyday functionality.</p>
+      <a href="#catalog" class="hero-cta">Shop Collection <i data-lucide="arrow-right"></i></a>
+    </div>
+    <div class="hero-blur-1"></div>
+    <div class="hero-blur-2"></div>
+  </section>
+
+  <!-- Main Catalog Section -->
+  <main id="catalog" class="container">
+    <div class="catalog-header">
+      <h2 class="section-title">Curated Catalog</h2>
+      <div class="category-filters">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="electronics">Electronics</button>
+        <button class="filter-btn" data-category="wearables">Wearables</button>
+        <button class="filter-btn" data-category="smart home">Smart Home</button>
+        <button class="filter-btn" data-category="accessories">Accessories</button>
+        <button class="filter-btn" data-category="office gear">Office Gear</button>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="product-grid">
+      <!-- Loading State -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching curated goods...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Cart Drawer Overlay -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  
+  <!-- Cart Sidebar Drawer -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <h3>Your Bag</h3>
+      <button class="close-btn" id="cart-close-btn">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items injected by JS -->
+      <div class="empty-cart-state">
+        <i data-lucide="shopping-basket" class="empty-cart-icon"></i>
+        <p>Your shopping bag is empty</p>
+        <button class="shop-now-btn" id="shop-now-btn">Start Shopping</button>
+      </div>
+    </div>
+
+    <div class="cart-drawer-footer" id="cart-footer">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">$0.00</span>
+      </div>
+      <div class="summary-row">
+        <span>Shipping</span>
+        <span class="free-shipping">FREE</span>
+      </div>
+      <div class="summary-row total-row">
+        <span>Total</span>
+        <span id="cart-total">$0.00</span>
+      </div>
+      <button class="checkout-btn" id="checkout-btn">
+        <span>Proceed to Checkout</span>
+        <i data-lucide="arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <p>&copy; 2026 PEAKYSHOP. Designed with premium dark aesthetics. A DevOps College Demonstration Project.</p>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
