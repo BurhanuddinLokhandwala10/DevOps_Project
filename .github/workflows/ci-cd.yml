@@ -68,6 +68,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    env:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
     steps:
     - name: Checkout Code
@@ -81,42 +84,45 @@ jobs:
 
     # Log in to Docker Hub (or GHCR). Using Docker Hub here; user must add DOCKERHUB_USERNAME and DOCKERHUB_TOKEN to repo secrets.
     - name: Log in to Docker Hub
+      if: env.DOCKERHUB_USERNAME != ''
       uses: docker/login-action@v3
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # We allow it to continue on error if secrets are missing, so the workflow still shows green or skips nicely in non-configured environments.
+        username: ${{ env.DOCKERHUB_USERNAME }}
+        password: ${{ env.DOCKERHUB_TOKEN }}
       continue-on-error: true
 
     # Build and Push Product Catalog
     - name: Build and Push Product Catalog
+      if: env.DOCKERHUB_USERNAME != ''
       uses: docker/build-push-action@v5
       with:
         context: ./product-catalog
-        push: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/product-catalog:${{ github.sha }}
+          ${{ env.DOCKERHUB_USERNAME }}/product-catalog:latest
+          ${{ env.DOCKERHUB_USERNAME }}/product-catalog:${{ github.sha }}
 
     # Build and Push Shopping Cart
     - name: Build and Push Shopping Cart
+      if: env.DOCKERHUB_USERNAME != ''
       uses: docker/build-push-action@v5
       with:
         context: ./shopping-cart
-        push: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/shopping-cart:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/shopping-cart:${{ github.sha }}
+          ${{ env.DOCKERHUB_USERNAME }}/shopping-cart:latest
+          ${{ env.DOCKERHUB_USERNAME }}/shopping-cart:${{ github.sha }}
 
     # Build and Push Frontend
     - name: Build and Push Frontend
+      if: env.DOCKERHUB_USERNAME != ''
       uses: docker/build-push-action@v5
       with:
         context: ./frontend
-        push: ${{ secrets.DOCKERHUB_USERNAME != '' }}
+        push: true
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/frontend:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/frontend:${{ github.sha }}
+          ${{ env.DOCKERHUB_USERNAME }}/frontend:latest
+          ${{ env.DOCKERHUB_USERNAME }}/frontend:${{ github.sha }}
 
   # Job 3: Deploy to Kubernetes cluster (depends on build-and-push success)
   deploy:
@@ -124,6 +130,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    env:
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
     steps:
     - name: Checkout Code
@@ -131,10 +139,11 @@ jobs:
 
     # Setup Kubectl context. Kubeconfig should be added to repo secrets.
     - name: Set Kubernetes Context
+      if: env.KUBE_CONFIG != ''
       uses: azure/k8s-set-context@v4
       with:
         method: kubeconfig
-        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+        kubeconfig: ${{ env.KUBE_CONFIG }}
       continue-on-error: true
 
     # Dry-run validation to test manifest syntax before applying
@@ -147,7 +156,7 @@ jobs:
 
     # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
     - name: Deploy Manifests
-      if: ${{ secrets.KUBE_CONFIG != '' }}
+      if: env.KUBE_CONFIG != ''
       run: |
         kubectl apply -f k8s/
         kubectl rollout restart deployment/product-catalog
