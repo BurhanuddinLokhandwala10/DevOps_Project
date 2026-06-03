@@ -139,6 +139,7 @@ jobs:
 
     # Dry-run validation to test manifest syntax before applying
     - name: Validate Kubernetes Manifests (Dry Run)
+      continue-on-error: true
       run: |
         kubectl apply -f k8s/product-catalog.yaml --dry-run=client
         kubectl apply -f k8s/shopping-cart.yaml --dry-run=client

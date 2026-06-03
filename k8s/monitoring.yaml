@@ -4,7 +4,6 @@ metadata:
   name: prometheus-config
   labels:
     name: prometheus-config
-spec:
 data:
   prometheus.yml: |
     global:

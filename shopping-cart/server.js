@@ -99,8 +99,10 @@ app.get('/metrics', async (req, res) => {
   res.send(await registry.metrics());
 });
 
-// Export app for unit tests
+// Export app and reset helper for unit tests
+const resetCart = () => { cartItems = []; };
 module.exports = app;
+module.exports.resetCart = resetCart;
 
 // Listen only if run directly
 if (require.main === module) {
