@@ -148,7 +148,7 @@ jobs:
 
     # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
     - name: Deploy Manifests
-      if: ${{ secrets.KUBE_CONFIG != '' }}
+      if: secrets.KUBE_CONFIG != ''
       run: |
         kubectl apply -f k8s/
         kubectl rollout restart deployment/product-catalog
@@ -157,7 +157,7 @@ jobs:
 
     # Post-deployment Monitoring & Automated Rollback
     - name: Monitor and Auto-Rollback
-      if: ${{ secrets.KUBE_CONFIG != '' }}
+      if: secrets.KUBE_CONFIG != ''
       run: |
         chmod +x ./scripts/monitor-rollback.sh
         ./scripts/monitor-rollback.sh
