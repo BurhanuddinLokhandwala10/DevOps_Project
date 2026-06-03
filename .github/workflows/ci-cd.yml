@@ -154,3 +154,10 @@ jobs:
         kubectl rollout restart deployment/product-catalog
         kubectl rollout restart deployment/shopping-cart
         kubectl rollout restart deployment/frontend
+
+    # Post-deployment Monitoring & Automated Rollback
+    - name: Monitor and Auto-Rollback
+      if: ${{ secrets.KUBE_CONFIG != '' }}
+      run: |
+        chmod +x ./scripts/monitor-rollback.sh
+        ./scripts/monitor-rollback.sh
