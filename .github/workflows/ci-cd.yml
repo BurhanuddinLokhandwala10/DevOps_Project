@@ -131,13 +131,8 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Setup Kubectl context. Kubeconfig should be added to repo secrets.
-    - name: Set Kubernetes Context
-      uses: azure/k8s-set-context@v4
-      with:
-        method: kubeconfig
-        kubeconfig: ${{ secrets.KUBE_CONFIG }}
-      continue-on-error: true
+    # Since this is a self-hosted runner, it will automatically use your local ~/.kube/config!
+    # No need to set the context manually from a secret.
 
     # Replace placeholder Docker Hub username in manifests with actual username
     - name: Inject Docker Hub Username into Manifests
