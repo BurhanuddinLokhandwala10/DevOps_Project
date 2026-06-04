@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: shopping-cart
-        image: peakyecommerce/shopping-cart:latest
+        image: burhanuddinlokhandwala10/shopping-cart:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5002

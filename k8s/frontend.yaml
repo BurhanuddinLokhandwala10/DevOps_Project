@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: peakyecommerce/frontend:latest
+        image: burhanuddinlokhandwala10/frontend:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
