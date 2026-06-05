@@ -123,37 +123,24 @@ jobs:
   # Job 3: Deploy to Kubernetes cluster (depends on build-and-push success)
   deploy:
     name: Deploy to Kubernetes
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-and-push
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Set up kubectl and configure kubeconfig from secret when provided
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v3
-      with:
-        version: 'latest'
+    # Since this is a self-hosted runner, it will automatically use your local ~/.kube/config!
+    # No need to set the context manually from a secret.
 
-    - name: Configure kubeconfig
-      if: ${{ env.KUBE_CONFIG != '' }}
-      uses: azure/k8s-set-context@v3
-      with:
-        method: kubeconfig
-        kubeconfig: ${{ env.KUBE_CONFIG }}
-
-    # Replace placeholder Docker Hub username in manifests with actual username (works on ubuntu runners)
+    # Replace placeholder Docker Hub username in manifests with actual username
     - name: Inject Docker Hub Username into Manifests
-      if: ${{ env.DOCKERHUB_USERNAME != '' }}
+      if: env.KUBE_CONFIG != ''
       run: |
-        for f in k8s/*.yaml; do
-          sed -i "s/peakyecommerce/$DOCKERHUB_USERNAME/g" "$f"
-        done
+        Get-ChildItem -Path k8s\*.yaml | ForEach-Object { (Get-Content $_.FullName) -replace 'peakyecommerce', '${{ secrets.DOCKERHUB_USERNAME }}' | Set-Content $_.FullName }
 
     # Dry-run validation to test manifest syntax before applying
     - name: Validate Kubernetes Manifests (Dry Run)
@@ -165,9 +152,8 @@ jobs:
         kubectl apply -f k8s/monitoring.yaml --dry-run=client
 
     # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
-
     - name: Deploy Manifests
-      if: ${{ env.KUBE_CONFIG != '' }}
+      if: env.KUBE_CONFIG != ''
       run: |
         kubectl apply -f k8s/
         kubectl rollout restart deployment/product-catalog
@@ -176,6 +162,10 @@ jobs:
 
     # Post-deployment Monitoring & Automated Rollback
     - name: Monitor and Auto-Rollback
-      if: ${{ env.KUBE_CONFIG != '' }}
+      if: env.KUBE_CONFIG != ''
       run: |
-        bash ./scripts/monitor-rollback.sh || echo "Warning: monitor-rollback script failed or not present; skipping rollback monitoring."
+        if (Test-Path "C:\Program Files\Git\bin\bash.exe") {
+          & "C:\Program Files\Git\bin\bash.exe" ./scripts/monitor-rollback.sh
+        } else {
+          Write-Host "Warning: Git Bash not found. Skipping rollback monitoring."
+        }
