@@ -142,16 +142,10 @@ jobs:
 
     - name: Configure kubeconfig
       if: ${{ env.KUBE_CONFIG != '' }}
-      run: |
-        mkdir -p $HOME/.kube
-        # Check if it's plain text by looking for typical kubeconfig keywords
-        if echo "$KUBE_CONFIG" | grep -q "apiVersion"; then
-          echo "Secret is plain text. Writing and stripping carriage returns..."
-          echo "$KUBE_CONFIG" | tr -d '\r' > $HOME/.kube/config
-        else
-          echo "Secret is base64. Decoding..."
-          echo "$KUBE_CONFIG" | base64 --decode | tr -d '\r' > $HOME/.kube/config
-        fi
+      uses: azure/k8s-set-context@v3
+      with:
+        method: kubeconfig
+        kubeconfig: ${{ env.KUBE_CONFIG }}
 
     # Replace placeholder Docker Hub username in manifests with actual username (works on ubuntu runners)
     - name: Inject Docker Hub Username into Manifests
