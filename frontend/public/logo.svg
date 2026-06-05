@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="PeakyShop logo">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#5c6bc0"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="24" fill="#0d0e14"/>
+  <circle cx="64" cy="44" r="28" fill="url(#g)" opacity="0.95"/>
+  <text x="64" y="80" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="48" fill="#ffffff">P</text>
+</svg>

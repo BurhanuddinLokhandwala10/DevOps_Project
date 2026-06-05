@@ -229,6 +229,12 @@ img {
   stroke-width: 2.5px;
 }
 
+.logo-img {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
 .logo-text {
   font-size: 1.22rem;
   font-weight: 800;
