@@ -145,9 +145,9 @@ jobs:
       run: |
         mkdir -p $HOME/.kube
         # Try decoding as base64. If it fails, assume it is plain text.
-        if ! echo "${{ env.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config 2>/dev/null; then
+        if ! echo "$KUBE_CONFIG" | base64 --decode > $HOME/.kube/config 2>/dev/null; then
           echo "Secret is not base64. Writing as plain text..."
-          echo "${{ env.KUBE_CONFIG }}" > $HOME/.kube/config
+          echo "$KUBE_CONFIG" > $HOME/.kube/config
         fi
 
     # Replace placeholder Docker Hub username in manifests with actual username (works on ubuntu runners)
