@@ -123,12 +123,12 @@ jobs:
   # Job 3: Deploy to Kubernetes cluster (depends on build-and-push success)
   deploy:
     name: Deploy to Kubernetes
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, windows]
     needs: build-and-push
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME || '' }}
 
     steps:
     - name: Checkout Code
@@ -142,12 +142,12 @@ jobs:
       env:
         KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
-    # Replace placeholder Docker Hub username in manifests with actual username
+    # Replace placeholder Docker Hub username in manifests with actual username if configured
     - name: Inject Docker Hub Username into Manifests
-      if: env.KUBE_CONFIG != ''
+      if: env.DOCKERHUB_USERNAME != ''
       run: |
         for f in k8s/*.yaml; do
-          sed -i "s/peakyecommerce/${{ secrets.DOCKERHUB_USERNAME }}/g" "$f"
+          sed -i "s/peakyecommerce/${{ env.DOCKERHUB_USERNAME }}/g" "$f"
         done
 
     # Dry-run validation to test manifest syntax before applying
@@ -159,9 +159,8 @@ jobs:
         kubectl apply -f k8s/frontend.yaml --dry-run=client
         kubectl apply -f k8s/monitoring.yaml --dry-run=client
 
-    # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
+    # Apply configuration and trigger rolling update in K8s
     - name: Deploy Manifests
-      if: env.KUBE_CONFIG != ''
       run: |
         kubectl apply -f k8s/
         kubectl rollout restart deployment/product-catalog
@@ -170,7 +169,6 @@ jobs:
 
     # Post-deployment Monitoring & Automated Rollback
     - name: Monitor and Auto-Rollback
-      if: env.KUBE_CONFIG != ''
       run: |
         if [ -x "$(command -v bash)" ] && [ -f ./scripts/monitor-rollback.sh ]; then
           bash ./scripts/monitor-rollback.sh
