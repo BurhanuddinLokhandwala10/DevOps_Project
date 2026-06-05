@@ -123,6 +123,7 @@ jobs:
   # Job 3: Deploy to Kubernetes cluster (depends on build-and-push success)
   deploy:
     name: Deploy to Kubernetes
+    # Deploy uses the local self-hosted Windows runner so it can reach the Minikube cluster on your laptop.
     runs-on: [self-hosted, windows]
     needs: build-and-push
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
