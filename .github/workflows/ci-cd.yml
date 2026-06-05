@@ -121,7 +121,7 @@ jobs:
   # Job 3: Deploy to Kubernetes cluster (depends on build-and-push success)
   deploy:
     name: Deploy to Kubernetes
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: build-and-push
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
     env:
@@ -131,14 +131,24 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Since this is a self-hosted runner, it will automatically use your local ~/.kube/config!
-    # No need to set the context manually from a secret.
+    # Set up kubectl and configure kubeconfig from secret when provided
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
 
-    # Replace placeholder Docker Hub username in manifests with actual username
-    - name: Inject Docker Hub Username into Manifests
+    - name: Configure kubeconfig
       if: env.KUBE_CONFIG != ''
       run: |
-        Get-ChildItem -Path k8s\*.yaml | ForEach-Object { (Get-Content $_.FullName) -replace 'peakyecommerce', '${{ secrets.DOCKERHUB_USERNAME }}' | Set-Content $_.FullName }
+        echo "${{ env.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
+
+    # Replace placeholder Docker Hub username in manifests with actual username (works on ubuntu runners)
+    - name: Inject Docker Hub Username into Manifests
+      if: secrets.DOCKERHUB_USERNAME != ''
+      run: |
+        for f in k8s/*.yaml; do
+          sed -i "s/peakyecommerce/${{ secrets.DOCKERHUB_USERNAME }}/g" "$f"
+        done
 
     # Dry-run validation to test manifest syntax before applying
     - name: Validate Kubernetes Manifests (Dry Run)
@@ -150,6 +160,7 @@ jobs:
         kubectl apply -f k8s/monitoring.yaml --dry-run=client
 
     # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
+
     - name: Deploy Manifests
       if: env.KUBE_CONFIG != ''
       run: |
@@ -162,8 +173,4 @@ jobs:
     - name: Monitor and Auto-Rollback
       if: env.KUBE_CONFIG != ''
       run: |
-        if (Test-Path "C:\Program Files\Git\bin\bash.exe") {
-          & "C:\Program Files\Git\bin\bash.exe" ./scripts/monitor-rollback.sh
-        } else {
-          Write-Host "Warning: Git Bash not found. Skipping rollback monitoring."
-        }
+        bash ./scripts/monitor-rollback.sh || echo "Warning: monitor-rollback script failed or not present; skipping rollback monitoring."
