@@ -22,7 +22,7 @@ PRODUCTS = [
         "id": 1,
         "name": "AeroSound Max",
         "price": 199.99,
-        "description": "Premium noise-cancelling over-ear wireless headphones with immersive high-fidelity audio.",
+        "description": "Premium noise-cancelling over-ear wireless headphones with immersive high-fidelity sound.",
         "category": "Electronics",
         "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80"
     },
@@ -30,7 +30,7 @@ PRODUCTS = [
         "id": 2,
         "name": "VeloSmart Watch",
         "price": 249.99,
-        "description": "Sleek active fitness tracker and smartwatch with continuous bio-tracking and 7-day battery.",
+        "description": "Sleek fitness tracker and smartwatch with continuous bio-tracking and a 7-day battery life.",
         "category": "Wearables",
         "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80"
     },
@@ -38,7 +38,7 @@ PRODUCTS = [
         "id": 3,
         "name": "Lumino Smart Bulb",
         "price": 59.99,
-        "description": "Wi-Fi enabled smart LED bulb featuring millions of colors, voice control, and automation schedules.",
+        "description": "Wi-Fi-enabled smart LED bulb with millions of colors, voice control, and automation schedules.",
         "category": "Smart Home",
         "image": "https://images.unsplash.com/photo-1565814636199-ae8133055c1c?w=600&auto=format&fit=crop&q=80"
     },
@@ -46,7 +46,7 @@ PRODUCTS = [
         "id": 4,
         "name": "Zenith Laptop Backpack",
         "price": 89.99,
-        "description": "Minimalist waterproof everyday backpack featuring a dedicated shockproof 16-inch laptop pocket.",
+        "description": "Minimalist waterproof backpack with a dedicated shockproof 16-inch laptop pocket.",
         "category": "Accessories",
         "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&auto=format&fit=crop&q=80"
     },
@@ -54,9 +54,33 @@ PRODUCTS = [
         "id": 5,
         "name": "Chronos Desk Pad",
         "price": 34.99,
-        "description": "Ultra-thick, organic merino wool felt desk mat designed to protect your desk and elevate mouse glide.",
+        "description": "Ultra-thick merino wool desk mat designed to protect your workspace and improve mouse glide.",
         "category": "Office Gear",
         "image": "https://images.unsplash.com/photo-1585776245991-cf89dd7fc73a?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 6,
+        "name": "KeyMaster Pro Mechanical Keyboard",
+        "price": 139.99,
+        "description": "Compact TKL mechanical keyboard with Cherry MX Red switches, per-key RGB backlighting, and an aircraft-grade aluminum frame.",
+        "category": "Electronics",
+        "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 7,
+        "name": "NovaCam 4K Webcam",
+        "price": 119.99,
+        "description": "Ultra-sharp 4K/30fps webcam with autofocus, HDR, dual noise-cancelling microphones, and a privacy shutter for professional video calls.",
+        "category": "Electronics",
+        "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 8,
+        "name": "ErgoLift Monitor Stand",
+        "price": 74.99,
+        "description": "Height-adjustable bamboo monitor stand with a built-in USB-A hub, cable management tray, and anti-slip padding.",
+        "category": "Office Gear",
+        "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&auto=format&fit=crop&q=80"
     }
 ]
 
