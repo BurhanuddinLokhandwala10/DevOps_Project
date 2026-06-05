@@ -143,6 +143,7 @@ jobs:
     - name: Configure kubeconfig
       if: ${{ env.KUBE_CONFIG != '' }}
       run: |
+        mkdir -p $HOME/.kube
         echo "${{ env.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
 
     # Replace placeholder Docker Hub username in manifests with actual username (works on ubuntu runners)
