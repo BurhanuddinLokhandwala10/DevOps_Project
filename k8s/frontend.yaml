@@ -30,8 +30,8 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: burhanuddinlokhandwala10/frontend:latest
-        imagePullPolicy: IfNotPresent
+        image: peakyecommerce/frontend:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         envFrom:

@@ -16,12 +16,12 @@ def test_health_check(client):
     assert data['status'] == 'healthy'
 
 def test_get_all_products(client):
-    """Test that GET /products returns all 5 products."""
+    """Test that GET /products returns all 8 products."""
     response = client.get('/products')
     assert response.status_code == 200
     data = json.loads(response.data.decode('utf-8'))
     assert isinstance(data, list)
-    assert len(data) == 5
+    assert len(data) == 8
     assert data[0]['name'] == 'AeroSound Max'
 
 def test_get_product_by_id(client):
@@ -31,6 +31,16 @@ def test_get_product_by_id(client):
     data = json.loads(response.data.decode('utf-8'))
     assert data['id'] == 2
     assert data['name'] == 'VeloSmart Watch'
+
+def test_get_new_products(client):
+    """Test that the 3 new products (ids 6, 7, 8) are present in the catalog."""
+    for pid, name in [(6, 'KeyMaster Pro Mechanical Keyboard'), (7, 'NovaCam 4K Webcam'), (8, 'ErgoLift Monitor Stand')]:
+        response = client.get(f'/products/{pid}')
+        assert response.status_code == 200
+        data = json.loads(response.data.decode('utf-8'))
+        assert data['id'] == pid
+        assert data['name'] == name
+
 
 def test_get_product_not_found(client):
     """Test that GET /products/<id> returns 404 if product does not exist."""

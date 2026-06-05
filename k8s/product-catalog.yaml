@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
       - name: product-catalog
-        image: burhanuddinlokhandwala10/product-catalog:latest
-        imagePullPolicy: IfNotPresent
+        image: peakyecommerce/product-catalog:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5001
         resources:

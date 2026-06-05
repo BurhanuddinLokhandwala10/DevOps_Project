@@ -20,8 +20,8 @@ spec:
     spec:
       containers:
       - name: shopping-cart
-        image: burhanuddinlokhandwala10/shopping-cart:latest
-        imagePullPolicy: IfNotPresent
+        image: peakyecommerce/shopping-cart:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 5002
         resources:
