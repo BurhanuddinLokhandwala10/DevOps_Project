@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "BurhanuddinLokhandwala10/DevOps_Project",
+  "pipelineDirectory": "DevOps_Project",
+  "workspaceDirectory": "DevOps_Project\\DevOps_Project",
+  "repositories": {
+    "BurhanuddinLokhandwala10/DevOps_Project": {
+      "repositoryPath": "DevOps_Project\\DevOps_Project",
+      "lastRunOn": "06/04/2026 22:36:35 +05:30"
+    }
+  },
+  "lastRunOn": "06/04/2026 22:49:30 +05:30"
+}

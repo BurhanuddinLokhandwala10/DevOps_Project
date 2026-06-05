@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 21,
+  "agentName": "LAPTOP-QNI1IHPA",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus13.actions.githubusercontent.com/0oUb7D1KsbAdfeFdgKYUEmoMHdYwrCegJqqEXZkcIomLFYgNGB/",
+  "gitHubUrl": "https://github.com/BurhanuddinLokhandwala10/DevOps_Project",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}

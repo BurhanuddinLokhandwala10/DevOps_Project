@@ -57,6 +57,30 @@ PRODUCTS = [
         "description": "Ultra-thick, organic merino wool felt desk mat designed to protect your desk and elevate mouse glide.",
         "category": "Office Gear",
         "image": "https://images.unsplash.com/photo-1585776245991-cf89dd7fc73a?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 6,
+        "name": "KeyMaster Pro Mechanical Keyboard",
+        "price": 139.99,
+        "description": "Compact TKL mechanical keyboard with Cherry MX Red switches, per-key RGB backlighting, and aircraft-grade aluminium frame.",
+        "category": "Electronics",
+        "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 7,
+        "name": "NovaCam 4K Webcam",
+        "price": 119.99,
+        "description": "Ultra-sharp 4K/30fps webcam with auto-focus, HDR, dual built-in noise-cancelling mics, and privacy shutter for pro-grade video calls.",
+        "category": "Electronics",
+        "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+        "id": 8,
+        "name": "ErgoLift Monitor Stand",
+        "price": 74.99,
+        "description": "Height-adjustable solid bamboo monitor riser with built-in USB-A hub, cable management tray, and anti-slip padding.",
+        "category": "Office Gear",
+        "image": "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=600&auto=format&fit=crop&q=80"
     }
 ]
 

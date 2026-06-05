@@ -1,33 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Peaky Shop | Minimalist E-Commerce</title>
-  <!-- Google Fonts: Outfit -->
+  <title>PeakyShop | Premium Workspace & Electronics</title>
+  <meta name="description"
+    content="Shop premium workspace accessories, electronics, wearables and smart home products. Free shipping on all orders.">
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Lucide Icons CDN -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Main Stylesheet -->
+  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  
-  <!-- Navigation Header -->
-  <header class="navbar">
+
+  <!-- Top Announcement Bar -->
+  <div class="top-bar" id="top-bar">
+    <div class="top-bar-inner">
+      <span class="top-bar-message">Free shipping on all orders above <strong>&#8377;2,999</strong>
+        &nbsp;&nbsp;|&nbsp;&nbsp; Use code <strong>PEAKY10</strong> for 10% off</span>
+      <div class="top-bar-links">
+        <a href="#" class="top-bar-link">Help Center</a>
+        <a href="#" class="top-bar-link">Track Order</a>
+        <a href="#" class="top-bar-link" id="top-login-btn">Log In</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Primary Navigation -->
+  <header class="navbar" id="main-navbar">
     <div class="nav-container">
-      <div class="nav-logo">
+      <!-- Logo -->
+      <div class="nav-logo" id="logo-nav">
         <i data-lucide="shopping-bag" class="logo-icon"></i>
-        <span>PEAKY<span class="logo-accent">SHOP</span></span>
+        <span class="logo-text">Peaky<span class="logo-accent">Shop</span></span>
       </div>
-      <div class="nav-search">
-        <input type="text" placeholder="Search curated products..." id="search-input" />
-        <i data-lucide="search" class="search-icon"></i>
-      </div>
-      <div class="nav-actions">
-        <button id="cart-toggle-btn" class="nav-btn cart-btn">
+
+      <!-- Primary Nav Links -->
+      <nav class="nav-links">
+        <a href="#" class="nav-link active" data-tab="shop-view">Shop</a>
+        <a href="#" class="nav-link" data-tab="wishlist-view">Wishlist</a>
+        <a href="#" class="nav-link" data-tab="compare-view">Compare</a>
+        <a href="#" class="nav-link" data-tab="profile-view">My Account</a>
+      </nav>
+
+      <!-- Right Controls -->
+      <div class="nav-right">
+        <!-- Search -->
+        <div class="nav-search-wrap" id="nav-search-bar">
+          <i data-lucide="search" class="search-icon-nav"></i>
+          <input type="text" placeholder="Search products..." id="search-input" class="nav-search-input" />
+        </div>
+
+        <!-- Currency Switcher -->
+        <div class="currency-pill">
+          <select id="currency-select" class="currency-dropdown">
+            <option value="INR">INR (&#8377;)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (&euro;)</option>
+          </select>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle theme">
+          <i data-lucide="sun" class="sun-icon"></i>
+          <i data-lucide="moon" class="moon-icon"></i>
+        </button>
+
+        <!-- Cart -->
+        <button id="cart-toggle-btn" class="cart-icon-btn" aria-label="Shopping cart">
           <i data-lucide="shopping-cart"></i>
           <span class="cart-badge" id="cart-count">0</span>
         </button>
@@ -35,94 +82,577 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <span class="hero-tag">New Collection 2026</span>
-      <h1>Elevate Your Workspace & Lifestyle</h1>
-      <p>Explore our carefully curated collection of premium accessories designed for minimalist aesthetic and everyday functionality.</p>
-      <a href="#catalog" class="hero-cta">Shop Collection <i data-lucide="arrow-right"></i></a>
-    </div>
-    <div class="hero-blur-1"></div>
-    <div class="hero-blur-2"></div>
-  </section>
+  <!-- ======================== SHOP VIEW ======================== -->
+  <div id="shop-view" class="app-view active">
 
-  <!-- Main Catalog Section -->
-  <main id="catalog" class="container">
-    <div class="catalog-header">
-      <h2 class="section-title">Curated Catalog</h2>
-      <div class="category-filters">
-        <button class="filter-btn active" data-category="all">All</button>
-        <button class="filter-btn" data-category="electronics">Electronics</button>
-        <button class="filter-btn" data-category="wearables">Wearables</button>
-        <button class="filter-btn" data-category="smart home">Smart Home</button>
-        <button class="filter-btn" data-category="accessories">Accessories</button>
-        <button class="filter-btn" data-category="office gear">Office Gear</button>
+    <!-- Hero Banner -->
+    <section class="hero-section">
+      <div class="hero-bg-mesh"></div>
+      <div class="hero-inner">
+
+        <!-- Left: Copy -->
+        <div class="hero-copy">
+          <span class="hero-badge">New Season Arrivals</span>
+          <h1 class="hero-title">Elevate Your<br>Workspace.</h1>
+          <p class="hero-subtitle">Curated premium electronics, wearables and office essentials — designed for professionals who demand the best.</p>
+          <div class="hero-actions">
+            <a href="#catalog" class="btn-primary" id="shop-collection-cta">
+              Shop Now <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="#" class="btn-ghost" onclick="switchTab('compare-view'); return false;">
+              Compare Products
+            </a>
+          </div>
+          <!-- Trust badges -->
+          <div class="hero-trust">
+            <div class="trust-badge">
+              <i data-lucide="shield-check"></i>
+              <span>Secure Checkout</span>
+            </div>
+            <div class="trust-badge">
+              <i data-lucide="truck"></i>
+              <span>Free Shipping</span>
+            </div>
+            <div class="trust-badge">
+              <i data-lucide="rotate-ccw"></i>
+              <span>30-Day Returns</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Product Image -->
+        <div class="hero-visual">
+          <div class="hero-image-frame">
+            <img src="hero-bg.png" alt="Premium workspace setup" class="hero-product-img" />
+            <!-- Floating product pill cards -->
+            <div class="hero-float-card hero-float-card--tl">
+              <div class="float-card-dot"></div>
+              <div>
+                <div class="float-card-title">AeroSound Max</div>
+                <div class="float-card-price">₹16,699</div>
+              </div>
+            </div>
+            <div class="hero-float-card hero-float-card--br">
+              <div class="float-card-dot float-card-dot--green"></div>
+              <div>
+                <div class="float-card-title">8 Products Available</div>
+                <div class="float-card-sub">All India Shipping</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <!-- Product Grid -->
-    <div class="product-grid" id="product-grid">
-      <!-- Loading State -->
-      <div class="loading-state">
-        <div class="spinner"></div>
-        <p>Fetching curated goods...</p>
+      <!-- Stats bar -->
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-number">8+</span>
+          <span class="stat-label">Premium Products</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-number">4.9</span>
+          <span class="stat-label">Average Rating</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-number">Free</span>
+          <span class="stat-label">Shipping India-wide</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-number">30-day</span>
+          <span class="stat-label">Easy Returns</span>
+        </div>
       </div>
-    </div>
-  </main>
+    </section>
 
-  <!-- Cart Drawer Overlay -->
+
+    <!-- Features Strip -->
+    <section class="features-strip">
+      <div class="features-inner">
+        <div class="feature-item">
+          <i data-lucide="truck"></i>
+          <div>
+            <strong>Free Shipping</strong>
+            <span>On orders above &#8377;2,999</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i data-lucide="shield-check"></i>
+          <div>
+            <strong>Secure Payments</strong>
+            <span>256-bit SSL encryption</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i data-lucide="rotate-ccw"></i>
+          <div>
+            <strong>Easy Returns</strong>
+            <span>30-day hassle-free returns</span>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i data-lucide="headphones"></i>
+          <div>
+            <strong>24/7 Support</strong>
+            <span>Dedicated customer care</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Catalog -->
+    <main id="catalog" class="catalog-section">
+      <div class="catalog-container">
+        <div class="catalog-header">
+          <div class="catalog-title-row">
+            <h2 class="section-heading">All Products</h2>
+            <span class="product-count" id="product-count-label"></span>
+          </div>
+          <div class="category-filters" id="category-filters">
+            <button class="filter-chip active" data-category="all">All</button>
+            <button class="filter-chip" data-category="electronics">Electronics</button>
+            <button class="filter-chip" data-category="wearables">Wearables</button>
+            <button class="filter-chip" data-category="smart home">Smart Home</button>
+            <button class="filter-chip" data-category="accessories">Accessories</button>
+            <button class="filter-chip" data-category="office gear">Office Gear</button>
+          </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="product-grid" id="product-grid">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading products...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================== WISHLIST VIEW ======================== -->
+  <div id="wishlist-view" class="app-view">
+    <main class="inner-page-container">
+      <div class="page-header">
+        <h1 class="page-title">My Wishlist</h1>
+        <p class="page-subtitle">Your saved items — ready to add to cart whenever you are.</p>
+      </div>
+      <div class="product-grid" id="wishlist-grid">
+        <div class="empty-state">
+          <i data-lucide="heart" class="empty-icon"></i>
+          <h3>No saved items</h3>
+          <p>Browse the catalog and save your favourite items here.</p>
+          <button class="btn-primary-sm" onclick="switchTab('shop-view')">Browse Catalog</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================== COMPARE VIEW ======================== -->
+  <div id="compare-view" class="app-view">
+    <main class="inner-page-container">
+      <div class="page-header">
+        <h1 class="page-title">Compare Products</h1>
+        <p class="page-subtitle">Select two products to view a side-by-side specification comparison.</p>
+      </div>
+
+      <div class="compare-selectors">
+        <div class="compare-select-group">
+          <label for="compare-select-1">Product 1</label>
+          <select id="compare-select-1" class="compare-select">
+            <option value="">-- Choose a product --</option>
+          </select>
+        </div>
+        <div class="compare-vs-badge">VS</div>
+        <div class="compare-select-group">
+          <label for="compare-select-2">Product 2</label>
+          <select id="compare-select-2" class="compare-select">
+            <option value="">-- Choose a product --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="compare-table-wrap" id="compare-matrix-wrapper" style="display:none;">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th class="spec-col">Specification</th>
+              <th id="compare-header-1">Product 1</th>
+              <th id="compare-header-2">Product 2</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="spec-label">Image</td>
+              <td id="compare-img-1" class="compare-img-cell"></td>
+              <td id="compare-img-2" class="compare-img-cell"></td>
+            </tr>
+            <tr>
+              <td class="spec-label">Price</td>
+              <td id="compare-price-1" class="compare-price-cell"></td>
+              <td id="compare-price-2" class="compare-price-cell"></td>
+            </tr>
+            <tr>
+              <td class="spec-label">Category</td>
+              <td id="compare-cat-1"></td>
+              <td id="compare-cat-2"></td>
+            </tr>
+            <tr>
+              <td class="spec-label">Rating</td>
+              <td id="compare-rating-1"></td>
+              <td id="compare-rating-2"></td>
+            </tr>
+            <tr>
+              <td class="spec-label">Description</td>
+              <td id="compare-desc-1" class="compare-desc-cell"></td>
+              <td id="compare-desc-2" class="compare-desc-cell"></td>
+            </tr>
+            <tr>
+              <td class="spec-label">Action</td>
+              <td id="compare-action-1"></td>
+              <td id="compare-action-2"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="empty-state" id="compare-empty-state">
+        <i data-lucide="git-compare" class="empty-icon"></i>
+        <h3>Select two products above</h3>
+        <p>Use the dropdowns to pick any two products and compare them instantly.</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================== PROFILE VIEW ======================== -->
+  <div id="profile-view" class="app-view">
+    <main class="inner-page-container">
+      <div class="page-header">
+        <h1 class="page-title">My Account</h1>
+        <p class="page-subtitle">Manage your profile, shipping address and order history.</p>
+      </div>
+
+      <div class="profile-layout">
+        <!-- Profile Details -->
+        <div class="profile-panel">
+          <div class="panel-header">
+            <i data-lucide="user"></i>
+            <h3>Profile Details</h3>
+          </div>
+          <form id="profile-details-form"
+            onsubmit="event.preventDefault(); showToast('Profile updated successfully.', 'success');">
+            <div class="form-row">
+              <div class="field-group">
+                <label>First Name</label>
+                <input type="text" value="Thomas" required />
+              </div>
+              <div class="field-group">
+                <label>Last Name</label>
+                <input type="text" value="Shelby" required />
+              </div>
+            </div>
+            <div class="field-group">
+              <label>Email Address</label>
+              <input type="email" value="tommy@peakyshop.in" required />
+            </div>
+            <div class="field-group">
+              <label>Phone Number</label>
+              <input type="tel" value="+91 98765 43210" />
+            </div>
+            <div class="field-group">
+              <label>Default Shipping Address</label>
+              <input type="text" value="12, MG Road, Bengaluru, Karnataka 560001" required />
+            </div>
+            <button type="submit" class="btn-form-submit">Save Changes</button>
+          </form>
+        </div>
+
+        <!-- Order History -->
+        <div class="profile-panel">
+          <div class="panel-header">
+            <i data-lucide="package"></i>
+            <h3>Order History</h3>
+          </div>
+          <div class="order-timeline" id="order-timeline">
+            <div class="empty-orders">
+              <p>No orders placed yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================== CHECKOUT VIEW ======================== -->
+  <div id="checkout-view" class="app-view">
+    <main class="inner-page-container">
+      <div class="page-header">
+        <h1 class="page-title">Secure Checkout</h1>
+        <p class="page-subtitle">Your payment information is protected with SSL encryption.</p>
+      </div>
+
+      <div class="checkout-layout">
+        <!-- Checkout Form -->
+        <div class="checkout-form-panel">
+          <form id="checkout-form">
+            <div class="form-section-title">Shipping Address</div>
+            <div class="form-row">
+              <div class="field-group">
+                <label for="ship-first">First Name</label>
+                <input type="text" id="ship-first" value="Thomas" required />
+              </div>
+              <div class="field-group">
+                <label for="ship-last">Last Name</label>
+                <input type="text" id="ship-last" value="Shelby" required />
+              </div>
+            </div>
+            <div class="field-group">
+              <label for="ship-address">Address</label>
+              <input type="text" id="ship-address" value="12, MG Road, Bengaluru" required />
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label for="ship-city">City</label>
+                <input type="text" id="ship-city" value="Bengaluru" required />
+              </div>
+              <div class="field-group">
+                <label for="ship-zip">PIN Code</label>
+                <input type="text" id="ship-zip" value="560001" required />
+              </div>
+            </div>
+
+            <div class="form-section-title" style="margin-top: 2rem;">Payment Details</div>
+            <div class="field-group">
+              <label for="card-num">Card Number</label>
+              <input type="text" id="card-num" placeholder="XXXX XXXX XXXX XXXX" required />
+            </div>
+            <div class="form-row">
+              <div class="field-group">
+                <label for="card-expiry">Expiry</label>
+                <input type="text" id="card-expiry" placeholder="MM / YY" required />
+              </div>
+              <div class="field-group">
+                <label for="card-cvv">CVV</label>
+                <input type="password" id="card-cvv" placeholder="***" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btn-checkout-submit">
+              <i data-lucide="lock"></i> Place Order Securely
+            </button>
+          </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="checkout-summary-panel">
+          <h3 class="summary-panel-title">Order Summary</h3>
+          <div class="checkout-summary-items" id="checkout-summary-items"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-line">
+            <span>Subtotal</span>
+            <span id="checkout-subtotal">&#8377;0.00</span>
+          </div>
+          <div class="summary-line" id="checkout-discount-row" style="display:none;">
+            <span>Discount</span>
+            <span id="checkout-discount-amount" class="discount-val">-&#8377;0.00</span>
+          </div>
+          <div class="summary-line">
+            <span>Shipping</span>
+            <span class="free-tag">FREE</span>
+          </div>
+          <div class="summary-line total-line">
+            <span>Total</span>
+            <span id="checkout-total">&#8377;0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Success Overlay -->
+      <div class="success-overlay" id="checkout-success-screen" style="display:none;">
+        <div class="success-card">
+          <div class="success-check-ring">
+            <i data-lucide="check"></i>
+          </div>
+          <h2>Order Confirmed!</h2>
+          <p>Thank you for your purchase. Your order has been placed successfully.</p>
+          <div class="receipt-block">
+            <div class="receipt-row">
+              <span>Order Number</span>
+              <strong id="receipt-order-no">#PK-0000000</strong>
+            </div>
+            <div class="receipt-row">
+              <span>Amount Paid</span>
+              <strong id="receipt-amount-paid">&#8377;0.00</strong>
+            </div>
+            <div class="receipt-row">
+              <span>Shipped To</span>
+              <strong id="receipt-ship-to">Thomas Shelby</strong>
+            </div>
+          </div>
+          <button class="btn-primary-sm" onclick="handleFinishCheckout()">Continue Shopping</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================== CART DRAWER ======================== -->
   <div class="cart-overlay" id="cart-overlay"></div>
-  
-  <!-- Cart Sidebar Drawer -->
   <div class="cart-drawer" id="cart-drawer">
-    <div class="cart-drawer-header">
-      <h3>Your Bag</h3>
-      <button class="close-btn" id="cart-close-btn">
+    <div class="cart-drawer-top">
+      <h3>Shopping Bag</h3>
+      <button class="drawer-close-btn" id="cart-close-btn" aria-label="Close cart">
         <i data-lucide="x"></i>
       </button>
     </div>
 
-    <div class="cart-items" id="cart-items">
-      <!-- Cart items injected by JS -->
+    <div class="cart-body" id="cart-items">
       <div class="empty-cart-state">
         <i data-lucide="shopping-basket" class="empty-cart-icon"></i>
-        <p>Your shopping bag is empty</p>
-        <button class="shop-now-btn" id="shop-now-btn">Start Shopping</button>
+        <p>Your bag is empty</p>
+        <button class="btn-primary-sm" id="shop-now-btn">Start Shopping</button>
       </div>
     </div>
 
-    <div class="cart-drawer-footer" id="cart-footer">
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <span id="cart-subtotal">$0.00</span>
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+      <!-- Promo Code -->
+      <div class="promo-row">
+        <input type="text" placeholder="Promo code (e.g. PEAKY10)" id="promo-input" class="promo-field" />
+        <button id="apply-promo-btn" class="promo-apply-btn">Apply</button>
       </div>
-      <div class="summary-row">
-        <span>Shipping</span>
-        <span class="free-shipping">FREE</span>
+      <div id="promo-applied-msg" class="promo-status"></div>
+
+      <!-- Pricing -->
+      <div class="cart-pricing">
+        <div class="cart-price-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">&#8377;0.00</span>
+        </div>
+        <div class="cart-price-row" id="discount-row" style="display:none;">
+          <span>Discount (<span id="discount-percent">0%</span>)</span>
+          <span id="discount-amount" class="discount-val">-&#8377;0.00</span>
+        </div>
+        <div class="cart-price-row">
+          <span>Shipping</span>
+          <span class="free-tag">FREE</span>
+        </div>
+        <div class="cart-price-row cart-total-row">
+          <span>Total</span>
+          <span id="cart-total">&#8377;0.00</span>
+        </div>
       </div>
-      <div class="summary-row total-row">
-        <span>Total</span>
-        <span id="cart-total">$0.00</span>
-      </div>
-      <button class="checkout-btn" id="checkout-btn">
-        <span>Proceed to Checkout</span>
-        <i data-lucide="arrow-right"></i>
+
+      <button class="btn-checkout" id="checkout-btn">
+        Proceed to Checkout <i data-lucide="arrow-right"></i>
       </button>
     </div>
   </div>
 
-  <!-- Toast Notification System -->
+  <!-- ======================== PRODUCT MODAL ======================== -->
+  <div class="modal-overlay" id="product-modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close-btn" id="product-modal-close" aria-label="Close modal">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="modal-inner" id="product-modal-content">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast System -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <p>&copy; 2026 PEAKYSHOP. Designed with premium dark aesthetics. A DevOps College Demonstration Project.</p>
+  <!-- ======================== FOOTER ======================== -->
+  <footer class="site-footer">
+    <div class="footer-top">
+      <div class="footer-grid">
+        <!-- Brand Column -->
+        <div class="footer-brand-col">
+          <div class="footer-logo">
+            <i data-lucide="shopping-bag"></i>
+            <span>Peaky<span class="footer-logo-accent">Shop</span></span>
+          </div>
+          <p class="footer-tagline">Premium workspace essentials and electronics for the modern professional.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Twitter / X">X</a>
+            <a href="#" aria-label="Instagram">Instagram</a>
+            <a href="#" aria-label="LinkedIn">LinkedIn</a>
+            <a href="#" aria-label="YouTube">YouTube</a>
+          </div>
+        </div>
+
+        <!-- Shop Column -->
+        <div class="footer-link-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">Best Sellers</a></li>
+            <li><a href="#">Electronics</a></li>
+            <li><a href="#">Wearables</a></li>
+            <li><a href="#">Smart Home</a></li>
+            <li><a href="#">Office Gear</a></li>
+            <li><a href="#">Accessories</a></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div class="footer-link-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Investor Relations</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Support Column -->
+        <div class="footer-link-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Track My Order</a></li>
+            <li><a href="#">Returns & Exchanges</a></li>
+            <li><a href="#">Shipping Policy</a></li>
+            <li><a href="#">Warranty</a></li>
+            <li><a href="#">Contact Support</a></li>
+          </ul>
+        </div>
+
+        <!-- Business Column -->
+        <div class="footer-link-col">
+          <h4>Business</h4>
+          <ul>
+            <li><a href="#">Enterprise Solutions</a></li>
+            <li><a href="#">Corporate Gifting</a></li>
+            <li><a href="#">Bulk Orders</a></li>
+            <li><a href="#">Affiliate Program</a></li>
+            <li><a href="#">Partner Portal</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p class="footer-copy">&copy; 2024 PeakyShop Pvt. Ltd. All rights reserved.</p>
+        <div class="footer-legal-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Cookie Policy</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
     </div>
   </footer>
 
-  <!-- Application Script -->
+  <!-- App Script -->
   <script src="app.js"></script>
 </body>
+
 </html>

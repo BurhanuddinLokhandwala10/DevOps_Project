@@ -9,6 +9,9 @@ app.use(express.json());
 const PRODUCT_CATALOG_URL = process.env.PRODUCT_CATALOG_URL || 'http://localhost:5001';
 const SHOPPING_CART_URL = process.env.SHOPPING_CART_URL || 'http://localhost:5002';
 
+// Chaos Mode Flag
+let chaosMode = false;
+
 // Serve static assets from 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -52,6 +55,9 @@ app.use((req, res, next) => {
 
 // Proxy to Product Catalog API
 app.get('/api/products', async (req, res) => {
+  if (chaosMode) {
+    return res.status(502).json({ error: 'Chaos Mode Active: Product Catalog service is unavailable' });
+  }
   try {
     const response = await fetch(`${PRODUCT_CATALOG_URL}/products`);
     const data = await response.json();
@@ -63,6 +69,9 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.get('/api/products/:id', async (req, res) => {
+  if (chaosMode) {
+    return res.status(502).json({ error: 'Chaos Mode Active: Product Catalog service is unavailable' });
+  }
   try {
     const response = await fetch(`${PRODUCT_CATALOG_URL}/products/${req.params.id}`);
     const data = await response.json();
@@ -75,6 +84,9 @@ app.get('/api/products/:id', async (req, res) => {
 
 // Proxy to Shopping Cart API
 app.get('/api/cart', async (req, res) => {
+  if (chaosMode) {
+    return res.status(502).json({ error: 'Chaos Mode Active: Shopping Cart service is unavailable' });
+  }
   try {
     const response = await fetch(`${SHOPPING_CART_URL}/cart`);
     const data = await response.json();
@@ -86,6 +98,9 @@ app.get('/api/cart', async (req, res) => {
 });
 
 app.post('/api/cart', async (req, res) => {
+  if (chaosMode) {
+    return res.status(502).json({ error: 'Chaos Mode Active: Shopping Cart service is unavailable' });
+  }
   try {
     const response = await fetch(`${SHOPPING_CART_URL}/cart`, {
       method: 'POST',
@@ -101,6 +116,9 @@ app.post('/api/cart', async (req, res) => {
 });
 
 app.delete('/api/cart/:id', async (req, res) => {
+  if (chaosMode) {
+    return res.status(502).json({ error: 'Chaos Mode Active: Shopping Cart service is unavailable' });
+  }
   try {
     const response = await fetch(`${SHOPPING_CART_URL}/cart/${req.params.id}`, {
       method: 'DELETE'
@@ -111,6 +129,16 @@ app.delete('/api/cart/:id', async (req, res) => {
     console.error('Error deleting from cart:', error);
     res.status(502).json({ error: 'Shopping Cart service is unavailable' });
   }
+});
+
+// Chaos Mode Control Endpoints
+app.post('/api/chaos/toggle', (req, res) => {
+  chaosMode = !chaosMode;
+  res.status(200).json({ chaosMode });
+});
+
+app.get('/api/chaos/status', (req, res) => {
+  res.status(200).json({ chaosMode });
 });
 
 // Health check
