@@ -138,13 +138,13 @@ jobs:
         version: 'latest'
 
     - name: Configure kubeconfig
-      if: env.KUBE_CONFIG != ''
+      if: ${{ env.KUBE_CONFIG != '' }}
       run: |
         echo "${{ env.KUBE_CONFIG }}" | base64 --decode > $HOME/.kube/config
 
     # Replace placeholder Docker Hub username in manifests with actual username (works on ubuntu runners)
     - name: Inject Docker Hub Username into Manifests
-      if: secrets.DOCKERHUB_USERNAME != ''
+      if: ${{ secrets.DOCKERHUB_USERNAME != '' }}
       run: |
         for f in k8s/*.yaml; do
           sed -i "s/peakyecommerce/${{ secrets.DOCKERHUB_USERNAME }}/g" "$f"
@@ -162,7 +162,7 @@ jobs:
     # Apply configuration and trigger rolling update in K8s (runs only if KUBE_CONFIG secret is set)
 
     - name: Deploy Manifests
-      if: env.KUBE_CONFIG != ''
+      if: ${{ env.KUBE_CONFIG != '' }}
       run: |
         kubectl apply -f k8s/
         kubectl rollout restart deployment/product-catalog
@@ -171,6 +171,6 @@ jobs:
 
     # Post-deployment Monitoring & Automated Rollback
     - name: Monitor and Auto-Rollback
-      if: env.KUBE_CONFIG != ''
+      if: ${{ env.KUBE_CONFIG != '' }}
       run: |
         bash ./scripts/monitor-rollback.sh || echo "Warning: monitor-rollback script failed or not present; skipping rollback monitoring."
