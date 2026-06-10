@@ -1,3 +1,4 @@
+# Frontend runtime configuration for Kubernetes deployments.
 apiVersion: v1
 kind: ConfigMap
 metadata:
