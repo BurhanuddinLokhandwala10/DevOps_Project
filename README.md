@@ -4,6 +4,12 @@ A professional, containerized 3-microservice e-commerce application equipped wit
 
 This project demonstrates a production-grade DevOps workflow featuring a backend-for-frontend (BFF) pattern, microservice isolation, unit testing gates, and configuration externalization.
 
+## DevOps Workflow Notes
+
+- Docker Compose is used for local multi-service validation before CI runs.
+- GitHub Actions runs unit tests before image build and deployment stages.
+- Kubernetes manifests under `k8s/` define service exposure, workloads, autoscaling, and monitoring resources.
+
 ---
 
 ## 🏗️ Architecture Overview
