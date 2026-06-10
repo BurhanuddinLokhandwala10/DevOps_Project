@@ -125,7 +125,8 @@ jobs:
     name: Deploy to Kubernetes
     runs-on: self-hosted
     needs: build-and-push
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    # Skip deployment only for the service configuration marker commit.
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && !startsWith(github.event.head_commit.message, 'Added Kubernetes service configuration')
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
 
