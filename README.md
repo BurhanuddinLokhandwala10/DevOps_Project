@@ -197,3 +197,4 @@ The workflow defined in `.github/workflows/ci-cd.yml` automates the testing, bui
 1. **Test Gate**: Runs Python pytest and Node.js jest test suites. If any test fails, execution stops immediately, blocking deployment.
 2. **Build and Push**: Runs on merge to `main`/`master`. Builds Docker images and pushes them to your Docker Registry (requires `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` repository secrets).
 3. **Deploy**: Authenticates to your Kubernetes cluster (using `KUBE_CONFIG` secret), performs dry-run validations on manifests, applies deployment changes, and performs a rolling restart to roll out fresh image tags.
+# E-Commerce-Pipeline
